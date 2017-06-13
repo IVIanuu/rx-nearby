@@ -53,7 +53,7 @@ import io.reactivex.subjects.PublishSubject;
  */
 public class RxNearby {
 
-    private static final String TAG = "RxNearby";
+    private static final String TAG = "RxNearbyy";
     private void log(String message) { Log.d(TAG, message); }
 
     private GoogleApiClient googleApiClient;
