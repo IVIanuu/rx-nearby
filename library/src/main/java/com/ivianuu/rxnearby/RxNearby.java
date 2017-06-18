@@ -45,6 +45,7 @@ import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Single;
 import io.reactivex.SingleEmitter;
 import io.reactivex.SingleOnSubscribe;
+import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.BehaviorSubject;
 import io.reactivex.subjects.PublishSubject;
 
@@ -53,7 +54,7 @@ import io.reactivex.subjects.PublishSubject;
  */
 public class RxNearby {
 
-    private static final String TAG = "RxNearbyy";
+    private static final String TAG = "RxNearby";
     private void log(String message) { Log.d(TAG, message); }
 
     private GoogleApiClient googleApiClient;
@@ -80,8 +81,8 @@ public class RxNearby {
         this.serviceId = serviceId;
 
         state = new State(false, false, false, false);
-        endpoints = new Endpoints();
         stateSubject.onNext(state);
+        endpoints = new Endpoints();
         endpointsSubject.onNext(endpoints);
 
         googleApiClient = new GoogleApiClient.Builder(context)
@@ -138,6 +139,13 @@ public class RxNearby {
      */
     public Observable<Endpoints> endpoints() {
         return endpointsSubject;
+    }
+
+    /**
+     * Returns the endpoints
+     */
+    public Endpoints getEndpoints() {
+        return endpoints;
     }
 
     // CLEANING
@@ -197,7 +205,7 @@ public class RxNearby {
             public void subscribe(@io.reactivex.annotations.NonNull ObservableEmitter<Endpoint> e) throws Exception {
                 advertise(e, thisDeviceName, strategy);
             }
-        });
+        }).subscribeOn(Schedulers.io());
     }
 
     private void advertise(final ObservableEmitter<Endpoint> e, String thisDeviceName, Strategy strategy) {
@@ -324,7 +332,7 @@ public class RxNearby {
             public void subscribe(@io.reactivex.annotations.NonNull ObservableEmitter<Endpoint> e) throws Exception {
                 discover(e, strategy);
             }
-        });
+        }).subscribeOn(Schedulers.io());
     }
 
     private void discover(final ObservableEmitter<Endpoint> e, Strategy strategy) {
@@ -457,7 +465,7 @@ public class RxNearby {
             public void subscribe(@io.reactivex.annotations.NonNull SingleEmitter<ConnectionEvent> e) throws Exception {
                 makeConnectionRequest(e, endpoint, thisDeviceName);
             }
-        });
+        }).subscribeOn(Schedulers.io());
     }
 
     private void makeConnectionRequest(final SingleEmitter<ConnectionEvent> e, final Endpoint endpoint, String thisDeviceName) {

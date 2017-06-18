@@ -65,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
         connectedEndpoints = (TextView) findViewById(R.id.connected_endpoints);
         discoveredEndpoints = (TextView) findViewById(R.id.discovered_endpoints);
 
-
         stopAllEndpointsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,7 +75,6 @@ public class MainActivity extends AppCompatActivity {
         rxNearby = new RxNearby(this, getPackageName());
 
         rxNearby.state()
-                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<State>() {
                     @Override
@@ -87,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
                 });
 
         rxNearby.endpoints()
-                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<Endpoints>() {
                     @Override
@@ -131,7 +128,6 @@ public class MainActivity extends AppCompatActivity {
                 });
 
         rxNearby.messages()
-                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<Message>() {
                     @Override
@@ -218,7 +214,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void connectToEndpoint(final Endpoint endpoint) {
         rxNearby.requestConnection(endpoint)
-                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<ConnectionEvent>() {
                     @Override
