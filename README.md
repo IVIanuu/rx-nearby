@@ -18,7 +18,7 @@ android {
 }
 
 dependencies {
-		  compile 'com.github.IVIanuu:RxNearby:LATEST-VERSION'
+	 compile 'com.github.IVIanuu.RxNearby:LATEST-VERSION'
 }
 ```
 
