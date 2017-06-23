@@ -6,9 +6,18 @@ This library wraps the nearby connections api in an easy to use reactive interfa
 
 ## Download
 ```groovy
+// in your root gradle
+allprojects {
+	repositories {
+		...
+		maven { url 'https://jitpack.io' }
+	}
+}
+```
 
+```groovy
 android {
-   
+  
     ...
     
     // include this to fix a build error
