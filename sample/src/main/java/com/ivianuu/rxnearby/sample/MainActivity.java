@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.nearby.connection.Payload;
+
 import com.ivianuu.rxnearby.ConnectionEvent;
 import com.ivianuu.rxnearby.Endpoint;
 import com.ivianuu.rxnearby.Endpoints;
@@ -102,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
                         }
 
                         // connected endpoints
-                        List<Endpoint> connectedEndpoints = endpoints.getEndpointsByStatus(Endpoint.STATUS_CONNECTED);
+                        List<Endpoint> connectedEndpoints = endpoints.getEndpointsByStatus(Endpoint.Status.STATUS_CONNECTED);
                         if (connectedEndpoints.isEmpty()) {
                             MainActivity.this.connectedEndpoints.setText("No connected endpoints");
                         } else {
@@ -114,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
                         }
 
                         // discovered endpoints
-                        List<Endpoint> discoveredEndpoints = endpoints.getEndpointsByStatus(Endpoint.STATUS_FOUND);
+                        List<Endpoint> discoveredEndpoints = endpoints.getEndpointsByStatus(Endpoint.Status.STATUS_FOUND);
                         if (discoveredEndpoints.isEmpty()) {
                             MainActivity.this.discoveredEndpoints.setText("No discovered endpoints");
                         } else {
@@ -149,13 +150,13 @@ public class MainActivity extends AppCompatActivity {
                                 @Override
                                 public void accept(@NonNull Endpoint endpoint) throws Exception {
                                     switch (endpoint.getStatus()) {
-                                        case Endpoint.STATUS_CONNECTED:
+                                        case Endpoint.Status.STATUS_CONNECTED:
                                             Toast.makeText(MainActivity.this, "Successfully connected to " + endpoint.getEndpointName(), Toast.LENGTH_SHORT).show();
                                             break;
-                                        case Endpoint.STATUS_DISCONNECTED:
+                                        case Endpoint.Status.STATUS_DISCONNECTED:
                                             Toast.makeText(MainActivity.this, "Disconnected from " + endpoint.getEndpointName(), Toast.LENGTH_SHORT).show();
                                             break;
-                                        case Endpoint.STATUS_REQUESTING_ME:
+                                        case Endpoint.Status.STATUS_REQUESTING_ME:
                                             Toast.makeText(MainActivity.this, "Connection request from " + endpoint.getEndpointName(), Toast.LENGTH_SHORT).show();
                                             rxNearby.acceptConnection(endpoint);
                                             break;
@@ -184,11 +185,11 @@ public class MainActivity extends AppCompatActivity {
                                 @Override
                                 public void accept(@NonNull Endpoint endpoint) throws Exception {
                                     switch (endpoint.getStatus()) {
-                                        case Endpoint.STATUS_FOUND:
+                                        case Endpoint.Status.STATUS_FOUND:
                                             Toast.makeText(MainActivity.this, "Endpoint found " + endpoint.getEndpointName(), Toast.LENGTH_SHORT).show();
                                             connectToEndpoint(endpoint);
                                             break;
-                                        case Endpoint.STATUS_LOST:
+                                        case Endpoint.Status.STATUS_LOST:
                                             Toast.makeText(MainActivity.this, "Endpoint lost " + endpoint.getEndpointName(), Toast.LENGTH_SHORT).show();
                                             break;
                                     }
@@ -218,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
                 .subscribe(new Consumer<ConnectionEvent>() {
                     @Override
                     public void accept(@NonNull ConnectionEvent connectionEvent) throws Exception {
-                        if (connectionEvent.getType() == ConnectionEvent.REQUEST_ACCEPTED) {
+                        if (connectionEvent.getType() == ConnectionEvent.EventType.REQUEST_ACCEPTED) {
                             Toast.makeText(MainActivity.this, "Successfully connected " + connectionEvent.getEndpoint().getEndpointName(), Toast.LENGTH_SHORT).show();
                         } else {
                             connectToEndpoint(endpoint);

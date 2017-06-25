@@ -22,6 +22,15 @@ import android.support.annotation.NonNull;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+import static com.ivianuu.rxnearby.Endpoint.Status.STATUS_CONNECTED;
+import static com.ivianuu.rxnearby.Endpoint.Status.STATUS_DISCONNECTED;
+import static com.ivianuu.rxnearby.Endpoint.Status.STATUS_FOUND;
+import static com.ivianuu.rxnearby.Endpoint.Status.STATUS_LOST;
+import static com.ivianuu.rxnearby.Endpoint.Status.STATUS_REQUESTED_BY_ME;
+import static com.ivianuu.rxnearby.Endpoint.Status.STATUS_REQUESTING_ME;
+import static com.ivianuu.rxnearby.Endpoint.Status.STATUS_REQUEST_DENIED_BY_ME;
+import static com.ivianuu.rxnearby.Endpoint.Status.STATUS_REQUEST_DENIED_BY_THEM;
+
 /**
  * Endpoint
  */
@@ -32,16 +41,15 @@ public class Endpoint {
             STATUS_REQUEST_DENIED_BY_ME, STATUS_REQUEST_DENIED_BY_THEM, STATUS_FOUND,
             STATUS_DISCONNECTED, STATUS_LOST})
     public @interface Status {
+        int STATUS_CONNECTED = 0;
+        int STATUS_REQUESTED_BY_ME = 1;
+        int STATUS_REQUESTING_ME = 2;
+        int STATUS_REQUEST_DENIED_BY_ME = 3;
+        int STATUS_REQUEST_DENIED_BY_THEM = 4;
+        int STATUS_FOUND = 5;
+        int STATUS_DISCONNECTED = 6;
+        int STATUS_LOST = 7;
     }
-
-    public static final int STATUS_CONNECTED = 0;
-    public static final int STATUS_REQUESTED_BY_ME = 1;
-    public static final int STATUS_REQUESTING_ME = 2;
-    public static final int STATUS_REQUEST_DENIED_BY_ME = 3;
-    public static final int STATUS_REQUEST_DENIED_BY_THEM = 4;
-    public static final int STATUS_FOUND = 5;
-    public static final int STATUS_DISCONNECTED = 6;
-    public static final int STATUS_LOST = 7;
 
     @Status
     private int status = -1;

@@ -22,6 +22,9 @@ import android.support.annotation.NonNull;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+import static com.ivianuu.rxnearby.ConnectionEvent.EventType.REQUEST_ACCEPTED;
+import static com.ivianuu.rxnearby.ConnectionEvent.EventType.REQUEST_REJECTED;
+
 /**
  * @author Manuel Wrage (IVIanuu)
  */
@@ -29,10 +32,10 @@ public class ConnectionEvent {
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({REQUEST_ACCEPTED, REQUEST_REJECTED})
-    public @interface EventType {}
-
-    public static final int REQUEST_ACCEPTED = 0;
-    public static final int REQUEST_REJECTED = 1;
+    public @interface EventType {
+        int REQUEST_ACCEPTED = 0;
+        int REQUEST_REJECTED = 1;
+    }
 
     @EventType
     private int type;

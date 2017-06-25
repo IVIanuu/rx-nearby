@@ -230,7 +230,7 @@ public class RxNearby {
                     @Override
                     public void onConnectionInitiated(String s, ConnectionInfo connectionInfo) {
                         Endpoint endpoint = new Endpoint(
-                                Endpoint.STATUS_REQUESTING_ME, s, connectionInfo.getEndpointName());
+                                Endpoint.Status.STATUS_REQUESTING_ME, s, connectionInfo.getEndpointName());
                         endpoints.addEndpoint(endpoint);
                         endpointsSubject.onNext(endpoints);
                         log("connection initiated from" + endpoint.getEndpointName());
@@ -245,13 +245,13 @@ public class RxNearby {
                         if (endpoint != null) {
                             if (connectionResolution.getStatus().isSuccess()) {
                                 log("successfully connected " + endpoint.getEndpointName());
-                                endpoint.setStatus(Endpoint.STATUS_CONNECTED);
+                                endpoint.setStatus(Endpoint.Status.STATUS_CONNECTED);
                             } else {
                                 log("failed to connect to " + endpoint.getEndpointName());
-                                if (endpoint.getStatus() == Endpoint.STATUS_REQUESTED_BY_ME) {
-                                    endpoint.setStatus(Endpoint.STATUS_REQUEST_DENIED_BY_THEM);
+                                if (endpoint.getStatus() == Endpoint.Status.STATUS_REQUESTED_BY_ME) {
+                                    endpoint.setStatus(Endpoint.Status.STATUS_REQUEST_DENIED_BY_THEM);
                                 } else {
-                                    endpoint.setStatus(Endpoint.STATUS_REQUEST_DENIED_BY_ME);
+                                    endpoint.setStatus(Endpoint.Status.STATUS_REQUEST_DENIED_BY_ME);
                                 }
                             }
 
@@ -270,7 +270,7 @@ public class RxNearby {
                             log("disconnected from " + endpoint.getEndpointName());
                             endpoints.removeEndpoint(endpoint);
                             endpointsSubject.onNext(endpoints);
-                            endpoint.setStatus(Endpoint.STATUS_DISCONNECTED);
+                            endpoint.setStatus(Endpoint.Status.STATUS_DISCONNECTED);
                             e.onNext(endpoint);
                         }
                     }
@@ -297,7 +297,7 @@ public class RxNearby {
     public void stopAdvertising() {
         log("stopping advertising");
         Nearby.Connections.stopAdvertising(googleApiClient);
-        endpoints.removeEndpointByStatus(Endpoint.STATUS_CONNECTED);
+        endpoints.removeEndpointByStatus(Endpoint.Status.STATUS_CONNECTED);
         endpointsSubject.onNext(endpoints);
         state.setAdvertising(false);
         state.setHost(false);
@@ -355,7 +355,7 @@ public class RxNearby {
         Nearby.Connections.startDiscovery(googleApiClient, serviceId, new EndpointDiscoveryCallback() {
             @Override
             public void onEndpointFound(String s, DiscoveredEndpointInfo discoveredEndpointInfo) {
-                Endpoint endpoint = new Endpoint(Endpoint.STATUS_FOUND, s, discoveredEndpointInfo.getEndpointName());
+                Endpoint endpoint = new Endpoint(Endpoint.Status.STATUS_FOUND, s, discoveredEndpointInfo.getEndpointName());
                 endpoints.addEndpoint(endpoint);
                 endpointsSubject.onNext(endpoints);
                 log("endpoint found " + endpoint.getEndpointName());
@@ -371,7 +371,7 @@ public class RxNearby {
                     log("endpoint lost " + endpoint.getEndpointName());
                     endpoints.removeEndpoint(endpoint);
                     endpointsSubject.onNext(endpoints);
-                    endpoint.setStatus(Endpoint.STATUS_LOST);
+                    endpoint.setStatus(Endpoint.Status.STATUS_LOST);
                     if (!e.isDisposed()) {
                         e.onNext(endpoint);
                     }
@@ -397,7 +397,7 @@ public class RxNearby {
     public void stopDiscovery() {
         log("stop discovery");
         Nearby.Connections.stopDiscovery(googleApiClient);
-        endpoints.removeEndpointByStatus(Endpoint.STATUS_FOUND);
+        endpoints.removeEndpointByStatus(Endpoint.Status.STATUS_FOUND);
         endpointsSubject.onNext(endpoints);
         state.setDiscovering(false);
         stateSubject.onNext(state);
@@ -439,7 +439,7 @@ public class RxNearby {
      */
     public void rejectConnection(@NonNull Endpoint endpoint) {
         log("reject connection to " + endpoint.getEndpointName());
-        endpoint.setStatus(Endpoint.STATUS_REQUEST_DENIED_BY_ME);
+        endpoint.setStatus(Endpoint.Status.STATUS_REQUEST_DENIED_BY_ME);
         endpointsSubject.onNext(endpoints);
         Nearby.Connections.rejectConnection(googleApiClient, endpoint.getEndpointId());
     }
@@ -474,7 +474,7 @@ public class RxNearby {
                 googleApiClient, thisDeviceName, endpoint.getEndpointId(), new ConnectionLifecycleCallback() {
                     @Override
                     public void onConnectionInitiated(String s, ConnectionInfo connectionInfo) {
-                        Endpoint initEndpoint = new Endpoint(Endpoint.STATUS_REQUEST_DENIED_BY_ME, s, connectionInfo.getEndpointName());
+                        Endpoint initEndpoint = new Endpoint(Endpoint.Status.STATUS_REQUEST_DENIED_BY_ME, s, connectionInfo.getEndpointName());
                         log("auto accepting our initiated connection to " + initEndpoint.getEndpointName());
                         endpoints.addEndpoint(initEndpoint);
                         endpointsSubject.onNext(endpoints);
@@ -486,7 +486,7 @@ public class RxNearby {
                         Endpoint resultEndpoint = endpoints.getEndpointById(s);
                         if (resultEndpoint != null) {
                             if (connectionResolution.getStatus().isSuccess()) {
-                                resultEndpoint.setStatus(Endpoint.STATUS_CONNECTED);
+                                resultEndpoint.setStatus(Endpoint.Status.STATUS_CONNECTED);
                                 endpointsSubject.onNext(endpoints);
                                 log("connected to " + resultEndpoint.getEndpointName());
                             } else {
@@ -514,10 +514,10 @@ public class RxNearby {
 
                         if (status.isSuccess()) {
                             log("successfully connected to " + endpoint.getEndpointName());
-                            event = new ConnectionEvent(ConnectionEvent.REQUEST_ACCEPTED, endpoint);
+                            event = new ConnectionEvent(ConnectionEvent.EventType.REQUEST_ACCEPTED, endpoint);
                         } else {
                             log("failed to connect to " + endpoint.getEndpointName() + " " + status.getStatusCode());
-                            event = new ConnectionEvent(ConnectionEvent.REQUEST_REJECTED, endpoint);
+                            event = new ConnectionEvent(ConnectionEvent.EventType.REQUEST_REJECTED, endpoint);
                         }
 
                         e.onSuccess(event);
@@ -560,7 +560,7 @@ public class RxNearby {
      */
     public void sendMessageToAllConnectedEndpoints(@NonNull Payload payload) {
         log("sending message to all");
-        for (Endpoint endpoint : endpoints.getEndpointsByStatus(Endpoint.STATUS_CONNECTED)) {
+        for (Endpoint endpoint : endpoints.getEndpointsByStatus(Endpoint.Status.STATUS_CONNECTED)) {
             sendMessage(new Message(endpoint, payload));
         }
     }
