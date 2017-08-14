@@ -17,7 +17,7 @@
 package com.ivianuu.rxnearby;
 
 /**
- * @author Manuel Wrage (IVIanuu)
+ * State
  */
 public class State {
 
@@ -26,13 +26,16 @@ public class State {
     private boolean advertising;
     private boolean discovering;
 
-    public State(boolean initialized, boolean host, boolean advertising, boolean discovering) {
+    State(boolean initialized, boolean host, boolean advertising, boolean discovering) {
         this.initialized = initialized;
         this.host = host;
         this.advertising = advertising;
         this.discovering = discovering;
     }
 
+    /**
+     * Returns whether this device is initialized
+     */
     public boolean isInitialized() {
         return initialized;
     }
@@ -41,6 +44,9 @@ public class State {
         this.initialized = initialized;
     }
 
+    /**
+     * Returns whether this device is host
+     */
     public boolean isHost() {
         return host;
     }
@@ -49,6 +55,9 @@ public class State {
         this.host = host;
     }
 
+    /**
+     * Returns whether this device is advertising
+     */
     public boolean isAdvertising() {
         return advertising;
     }
@@ -57,6 +66,9 @@ public class State {
         this.advertising = advertising;
     }
 
+    /**
+     * Returns whether this device is discovering
+     */
     public boolean isDiscovering() {
         return discovering;
     }

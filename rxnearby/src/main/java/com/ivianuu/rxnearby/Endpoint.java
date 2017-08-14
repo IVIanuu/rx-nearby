@@ -52,31 +52,43 @@ public class Endpoint {
     }
 
     @Status
-    private int status = -1;
+    private int status;
     
     private String endpointId;
     private String endpointName;
 
-    public Endpoint(@Status int status, @NonNull String endpointId, @NonNull String endpointName) {
+    Endpoint(@Status int status, @NonNull String endpointId, @NonNull String endpointName) {
         this.status = status;
         this.endpointId = endpointId;
         this.endpointName = endpointName;
     }
 
+    /**
+     * Returns the status of this endpoint
+     */
     @Status
     public int getStatus() {
         return status;
     }
 
+    /**
+     * Sets the status of this endpoint
+     */
     void setStatus(@Status int status) {
         this.status = status;
     }
 
+    /**
+     * Returns the endpoint id
+     */
     @NonNull
     public String getEndpointId() {
         return endpointId;
     }
 
+    /**
+     * Returns the endpoint name
+     */
     @NonNull
     public String getEndpointName() {
         return endpointName;

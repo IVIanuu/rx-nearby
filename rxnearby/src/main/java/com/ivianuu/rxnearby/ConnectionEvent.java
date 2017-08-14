@@ -26,7 +26,7 @@ import static com.ivianuu.rxnearby.ConnectionEvent.EventType.REQUEST_ACCEPTED;
 import static com.ivianuu.rxnearby.ConnectionEvent.EventType.REQUEST_REJECTED;
 
 /**
- * @author Manuel Wrage (IVIanuu)
+ * Represents a connection event
  */
 public class ConnectionEvent {
 
@@ -41,16 +41,22 @@ public class ConnectionEvent {
     private int type;
     private Endpoint endpoint;
 
-    public ConnectionEvent(@EventType int type, @NonNull Endpoint endpoint) {
+    ConnectionEvent(@EventType int type, @NonNull Endpoint endpoint) {
         this.type = type;
         this.endpoint = endpoint;
     }
 
+    /**
+     * Returns the type of this event
+     */
     @EventType
     public int getType() {
         return type;
     }
 
+    /**
+     * Returns the endpoint of this event
+     */
     @NonNull
     public Endpoint getEndpoint() {
         return endpoint;

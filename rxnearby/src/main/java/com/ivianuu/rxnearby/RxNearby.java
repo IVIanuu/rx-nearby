@@ -50,7 +50,7 @@ import io.reactivex.subjects.BehaviorSubject;
 import io.reactivex.subjects.PublishSubject;
 
 /**
- * @author Manuel Wrage (IVIanuu)
+ * Rx nearby
  */
 public class RxNearby {
 

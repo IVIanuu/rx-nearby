@@ -29,18 +29,27 @@ public class Message {
     private Payload payload;
     private long timestamp = 0;
 
-    public Message(@NonNull Endpoint endpoint, @NonNull Payload payload) {
+    Message(@NonNull Endpoint endpoint, @NonNull Payload payload) {
         this.endpoint = endpoint;
         this.payload = payload;
         this.timestamp = System.currentTimeMillis();
     }
 
+    /**
+     * Returns the sender endpoint
+     */
     public Endpoint getEndpoint() {
         return endpoint;
     }
 
+    /**
+     * Returns the payload
+     */
     public Payload getPayload() { return payload; }
 
+    /**
+     * Returns the timestamp
+     */
     public long getTimestamp() {
         return timestamp;
     }

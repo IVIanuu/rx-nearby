@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Manuel Wrage (IVIanuu)
+ * Endpoints
  */
 public class Endpoints {
 

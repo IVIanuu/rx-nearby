@@ -58,13 +58,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        advertiseButton = (Button) findViewById(R.id.advertise);
-        discoveryButton = (Button) findViewById(R.id.discover);
-        stopAllEndpointsButton = (Button) findViewById(R.id.stop_all_endpoints);
+        advertiseButton = findViewById(R.id.advertise);
+        discoveryButton = findViewById(R.id.discover);
+        stopAllEndpointsButton = findViewById(R.id.stop_all_endpoints);
 
-        allEndpoints = (TextView) findViewById(R.id.all_endpoints);
-        connectedEndpoints = (TextView) findViewById(R.id.connected_endpoints);
-        discoveredEndpoints = (TextView) findViewById(R.id.discovered_endpoints);
+        allEndpoints = findViewById(R.id.all_endpoints);
+        connectedEndpoints = findViewById(R.id.connected_endpoints);
+        discoveredEndpoints = findViewById(R.id.discovered_endpoints);
 
         stopAllEndpointsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -165,6 +165,7 @@ public class MainActivity extends AppCompatActivity {
                             }, new Consumer<Throwable>() {
                                 @Override
                                 public void accept(@NonNull Throwable throwable) throws Exception {
+                                    throwable.printStackTrace();
                                     Toast.makeText(MainActivity.this, "Failed to start advertising", Toast.LENGTH_SHORT).show();
                                 }
                             });
@@ -197,6 +198,7 @@ public class MainActivity extends AppCompatActivity {
                             }, new Consumer<Throwable>() {
                                 @Override
                                 public void accept(@NonNull Throwable throwable) throws Exception {
+                                    throwable.printStackTrace();
                                     Toast.makeText(MainActivity.this, "Start discovery failed", Toast.LENGTH_SHORT).show();
                                 }
                             });
@@ -204,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        final EditText editText = (EditText) findViewById(R.id.message_input);
+        final EditText editText = findViewById(R.id.message_input);
         findViewById(R.id.send_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
