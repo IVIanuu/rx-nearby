@@ -18,6 +18,7 @@ package com.ivianuu.rxnearby;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -113,6 +114,7 @@ public class RxNearby {
     /**
      * Emits on every state events
      */
+    @CheckResult @NonNull
     public Observable<State> state() {
         return stateSubject;
     }
@@ -137,6 +139,7 @@ public class RxNearby {
     /**
      * Emits when ever endpoints changes
      */
+    @CheckResult @NonNull
     public Observable<Endpoints> endpoints() {
         return endpointsSubject;
     }
@@ -171,6 +174,7 @@ public class RxNearby {
      * Starts advertising
      * @return Observable which emits on every endpoint event
      */
+    @CheckResult @NonNull
     public Observable<Endpoint> startAdvertising() {
         return startAdvertising(null, null);
     }
@@ -180,6 +184,7 @@ public class RxNearby {
      * @param thisDeviceName the name of this device
      * @return Observable which emits on every endpoint event
      */
+    @CheckResult @NonNull
     public Observable<Endpoint> startAdvertising(@NonNull String thisDeviceName) {
         return startAdvertising(thisDeviceName, null);
     }
@@ -189,6 +194,7 @@ public class RxNearby {
      * @param strategy The strategy for this operation
      * @return Observable which emits on every endpoint event
      */
+    @CheckResult @NonNull
     public Observable<Endpoint> startAdvertising(@NonNull Strategy strategy) {
         return startAdvertising(null, strategy);
     }
@@ -199,6 +205,7 @@ public class RxNearby {
      * @param strategy The strategy for this operation
      * @return Observable which emits on every endpoint event
      */
+    @CheckResult @NonNull
     public Observable<Endpoint> startAdvertising(final String thisDeviceName, final Strategy strategy) {
         return Observable.create(new ObservableOnSubscribe<Endpoint>() {
             @Override
@@ -317,6 +324,7 @@ public class RxNearby {
      * Starts discovery
      * @return Observable which emits on every endpoint event
      */
+    @CheckResult @NonNull
     public Observable<Endpoint> startDiscovery() {
         return startDiscovery(null);
     }
@@ -326,6 +334,7 @@ public class RxNearby {
      * @param strategy the strategy for this operation
      * @return Observable which emits on every endpoint event
      */
+    @CheckResult @NonNull
     public Observable<Endpoint> startDiscovery(final Strategy strategy) {
         return Observable.create(new ObservableOnSubscribe<Endpoint>() {
             @Override
@@ -449,6 +458,7 @@ public class RxNearby {
      * @param endpoint the endpoint
      * @return A single which emits on result
      */
+    @CheckResult @NonNull
     public Single<ConnectionEvent> requestConnection(@NonNull Endpoint endpoint) {
         return requestConnection(endpoint, null);
     }
@@ -459,6 +469,7 @@ public class RxNearby {
      * @param thisDeviceName the name of this device
      * @return A single which emits on result
      */
+    @CheckResult @NonNull
     public Single<ConnectionEvent> requestConnection(@NonNull final Endpoint endpoint, @Nullable final String thisDeviceName) {
         return Single.create(new SingleOnSubscribe<ConnectionEvent>() {
             @Override
@@ -551,6 +562,7 @@ public class RxNearby {
     /**
      * Emits when a new message was received
      */
+    @CheckResult @NonNull
     public Observable<Message> messages() {
         return messages;
     }
