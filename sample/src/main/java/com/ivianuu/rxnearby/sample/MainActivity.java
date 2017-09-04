@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        rxNearby = new RxNearby(this, getPackageName());
+        rxNearby = RxNearby.create(this);
 
         rxNearby.state()
                 .observeOn(AndroidSchedulers.mainThread())

@@ -23,11 +23,11 @@ import com.google.android.gms.nearby.connection.Payload;
 /**
  * Message class
  */
-public class Message {
+public final class Message {
 
-    private Endpoint endpoint;
-    private Payload payload;
-    private long timestamp = 0;
+    private final Endpoint endpoint;
+    private final Payload payload;
+    private final long timestamp;
 
     Message(@NonNull Endpoint endpoint, @NonNull Payload payload) {
         this.endpoint = endpoint;

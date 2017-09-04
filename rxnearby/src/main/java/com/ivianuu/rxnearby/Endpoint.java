@@ -34,12 +34,12 @@ import static com.ivianuu.rxnearby.Endpoint.Status.STATUS_REQUEST_DENIED_BY_THEM
 /**
  * Endpoint
  */
-public class Endpoint {
+public final class Endpoint {
 
-    @Retention(RetentionPolicy.SOURCE)
     @IntDef({STATUS_CONNECTED, STATUS_REQUESTED_BY_ME, STATUS_REQUESTING_ME,
             STATUS_REQUEST_DENIED_BY_ME, STATUS_REQUEST_DENIED_BY_THEM, STATUS_FOUND,
             STATUS_DISCONNECTED, STATUS_LOST})
+    @Retention(RetentionPolicy.SOURCE)
     public @interface Status {
         int STATUS_CONNECTED = 0;
         int STATUS_REQUESTED_BY_ME = 1;
@@ -54,8 +54,8 @@ public class Endpoint {
     @Status
     private int status;
     
-    private String endpointId;
-    private String endpointName;
+    private final String endpointId;
+    private final String endpointName;
 
     Endpoint(@Status int status, @NonNull String endpointId, @NonNull String endpointName) {
         this.status = status;

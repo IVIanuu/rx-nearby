@@ -28,18 +28,18 @@ import static com.ivianuu.rxnearby.ConnectionEvent.EventType.REQUEST_REJECTED;
 /**
  * Represents a connection event
  */
-public class ConnectionEvent {
+public final class ConnectionEvent {
 
-    @Retention(RetentionPolicy.SOURCE)
     @IntDef({REQUEST_ACCEPTED, REQUEST_REJECTED})
+    @Retention(RetentionPolicy.SOURCE)
     public @interface EventType {
         int REQUEST_ACCEPTED = 0;
         int REQUEST_REJECTED = 1;
     }
 
     @EventType
-    private int type;
-    private Endpoint endpoint;
+    private final int type;
+    private final Endpoint endpoint;
 
     ConnectionEvent(@EventType int type, @NonNull Endpoint endpoint) {
         this.type = type;

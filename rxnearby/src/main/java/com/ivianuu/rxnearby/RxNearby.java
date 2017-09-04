@@ -53,32 +53,22 @@ import io.reactivex.subjects.PublishSubject;
 /**
  * Rx nearby
  */
-public class RxNearby {
+public final class RxNearby {
 
     private static final String TAG = "RxNearby";
     private void log(String message) { Log.d(TAG, message); }
 
-    private GoogleApiClient googleApiClient;
+    private final GoogleApiClient googleApiClient;
+    private final String serviceId;
 
-    private String serviceId;
+    private final BehaviorSubject<Endpoints> endpointsSubject = BehaviorSubject.create();
+    private final PublishSubject<Message> messages = PublishSubject.create();
+    private final BehaviorSubject<State> stateSubject = BehaviorSubject.create();
 
     private State state;
-
     private Endpoints endpoints;
 
-    /**
-     * This will use the package name as service id
-     * @param context the context
-     */
-    public RxNearby(@NonNull Context context) {
-        this(context, context.getPackageName());
-    }
-
-    /**
-     * @param context the context
-     * @param serviceId the service id
-     */
-    public RxNearby(@NonNull Context context, @NonNull String serviceId) {
+    private RxNearby(Context context, String serviceId) {
         this.serviceId = serviceId;
 
         state = new State(false, false, false, false);
@@ -108,9 +98,25 @@ public class RxNearby {
         log("init");
     }
 
+    /**
+     * Returns a new RxNearby instance
+     * This will use the package name as the service id
+     */
+    @NonNull
+    public static RxNearby create(@NonNull Context context) {
+        return create(context, context.getPackageName());
+    }
+
+    /**
+     * Returns a new RxNearby instance
+     */
+    @NonNull
+    public static RxNearby create(@NonNull Context context, @NonNull String serviceId) {
+        return new RxNearby(context, serviceId);
+    }
+
     // STATE
 
-    private BehaviorSubject<State> stateSubject = BehaviorSubject.create();
     /**
      * Emits on every state events
      */
@@ -135,7 +141,6 @@ public class RxNearby {
 
     // ENDPOINTS
 
-    private BehaviorSubject<Endpoints> endpointsSubject = BehaviorSubject.create();
     /**
      * Emits when ever endpoints changes
      */
@@ -172,7 +177,6 @@ public class RxNearby {
 
     /**
      * Starts advertising
-     * @return Observable which emits on every endpoint event
      */
     @CheckResult @NonNull
     public Observable<Endpoint> startAdvertising() {
@@ -181,8 +185,6 @@ public class RxNearby {
 
     /**
      * Starts advertising
-     * @param thisDeviceName the name of this device
-     * @return Observable which emits on every endpoint event
      */
     @CheckResult @NonNull
     public Observable<Endpoint> startAdvertising(@NonNull String thisDeviceName) {
@@ -191,8 +193,6 @@ public class RxNearby {
 
     /**
      * Starts advertising
-     * @param strategy The strategy for this operation
-     * @return Observable which emits on every endpoint event
      */
     @CheckResult @NonNull
     public Observable<Endpoint> startAdvertising(@NonNull Strategy strategy) {
@@ -201,9 +201,6 @@ public class RxNearby {
 
     /**
      * Starts advertising
-     * @param thisDeviceName the name of this device
-     * @param strategy The strategy for this operation
-     * @return Observable which emits on every endpoint event
      */
     @CheckResult @NonNull
     public Observable<Endpoint> startAdvertising(final String thisDeviceName, final Strategy strategy) {
@@ -322,7 +319,6 @@ public class RxNearby {
 
     /**
      * Starts discovery
-     * @return Observable which emits on every endpoint event
      */
     @CheckResult @NonNull
     public Observable<Endpoint> startDiscovery() {
@@ -331,8 +327,6 @@ public class RxNearby {
 
     /**
      * Starts discovery
-     * @param strategy the strategy for this operation
-     * @return Observable which emits on every endpoint event
      */
     @CheckResult @NonNull
     public Observable<Endpoint> startDiscovery(final Strategy strategy) {
@@ -455,8 +449,6 @@ public class RxNearby {
 
     /**
      * Requests the connection to the specified endpoint
-     * @param endpoint the endpoint
-     * @return A single which emits on result
      */
     @CheckResult @NonNull
     public Single<ConnectionEvent> requestConnection(@NonNull Endpoint endpoint) {
@@ -465,9 +457,6 @@ public class RxNearby {
 
     /**
      * Requests the connection to the specified endpoint
-     * @param endpoint the endpoint
-     * @param thisDeviceName the name of this device
-     * @return A single which emits on result
      */
     @CheckResult @NonNull
     public Single<ConnectionEvent> requestConnection(@NonNull final Endpoint endpoint, @Nullable final String thisDeviceName) {
@@ -558,7 +547,6 @@ public class RxNearby {
 
     // MESSAGES
 
-    private PublishSubject<Message> messages = PublishSubject.create();
     /**
      * Emits when a new message was received
      */

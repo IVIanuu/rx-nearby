@@ -25,9 +25,9 @@ import java.util.List;
 /**
  * Endpoints
  */
-public class Endpoints {
+public final class Endpoints {
 
-    private List<Endpoint> endpoints = new ArrayList<>();
+    private final List<Endpoint> endpoints = new ArrayList<>();
 
     /**
      * Adds or updates the endpoint

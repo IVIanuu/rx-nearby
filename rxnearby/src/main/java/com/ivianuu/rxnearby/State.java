@@ -19,7 +19,7 @@ package com.ivianuu.rxnearby;
 /**
  * State
  */
-public class State {
+public final class State {
 
     private boolean initialized;
     private boolean host;
