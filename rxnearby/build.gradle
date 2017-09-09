@@ -1,7 +1,4 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.github.dcendents.android-maven'
-
-group='com.github.ivianuu'
 
 android {
     compileSdkVersion 26
@@ -13,11 +10,16 @@ android {
         versionCode 1
         versionName "1.0"
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
     // Nearby
-    compile 'com.google.android.gms:play-services-nearby:11.2.0'
+    compile 'com.google.android.gms:play-services-nearby:11.2.2'
 
     // RxJava
     compile "io.reactivex.rxjava2:rxjava:2.1.2"

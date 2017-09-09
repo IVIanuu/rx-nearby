@@ -204,12 +204,8 @@ public final class RxNearby {
      */
     @CheckResult @NonNull
     public Observable<Endpoint> startAdvertising(final String thisDeviceName, final Strategy strategy) {
-        return Observable.create(new ObservableOnSubscribe<Endpoint>() {
-            @Override
-            public void subscribe(@io.reactivex.annotations.NonNull ObservableEmitter<Endpoint> e) throws Exception {
-                advertise(e, thisDeviceName, strategy);
-            }
-        }).subscribeOn(Schedulers.io());
+        return Observable.create((ObservableOnSubscribe<Endpoint>) e ->
+                advertise(e, thisDeviceName, strategy)).subscribeOn(Schedulers.io());
     }
 
     private void advertise(final ObservableEmitter<Endpoint> e, String thisDeviceName, Strategy strategy) {
@@ -279,18 +275,15 @@ public final class RxNearby {
                         }
                     }
                 }, new AdvertisingOptions(strategy))
-        .setResultCallback(new ResultCallback<Connections.StartAdvertisingResult>() {
-            @Override
-            public void onResult(@NonNull Connections.StartAdvertisingResult startAdvertisingResult) {
-                state.setAdvertising(startAdvertisingResult.getStatus().isSuccess());
-                state.setHost(state.isAdvertising());
-                stateSubject.onNext(state);
+        .setResultCallback(startAdvertisingResult -> {
+            state.setAdvertising(startAdvertisingResult.getStatus().isSuccess());
+            state.setHost(state.isAdvertising());
+            stateSubject.onNext(state);
 
-                log("start advertising result " + startAdvertisingResult.getStatus().isSuccess());
-                if (!e.isDisposed() && !startAdvertisingResult.getStatus().isSuccess()) {
-                    int statusCode = startAdvertisingResult.getStatus().getStatusCode();
-                    e.onError(new Throwable("status " + statusCode));
-                }
+            log("start advertising result " + startAdvertisingResult.getStatus().isSuccess());
+            if (!e.isDisposed() && !startAdvertisingResult.getStatus().isSuccess()) {
+                int statusCode = startAdvertisingResult.getStatus().getStatusCode();
+                e.onError(new Throwable("status " + statusCode));
             }
         });
     }
@@ -330,12 +323,8 @@ public final class RxNearby {
      */
     @CheckResult @NonNull
     public Observable<Endpoint> startDiscovery(final Strategy strategy) {
-        return Observable.create(new ObservableOnSubscribe<Endpoint>() {
-            @Override
-            public void subscribe(@io.reactivex.annotations.NonNull ObservableEmitter<Endpoint> e) throws Exception {
-                discover(e, strategy);
-            }
-        }).subscribeOn(Schedulers.io());
+        return Observable.create((ObservableOnSubscribe<Endpoint>) e -> discover(e, strategy))
+                .subscribeOn(Schedulers.io());
     }
 
     private void discover(final ObservableEmitter<Endpoint> e, Strategy strategy) {
@@ -380,16 +369,13 @@ public final class RxNearby {
                     }
                 }
             }
-        }, new DiscoveryOptions(strategy)).setResultCallback(new ResultCallback<Status>() {
-            @Override
-            public void onResult(@NonNull Status status) {
-                state.setDiscovering(status.isSuccess());
-                stateSubject.onNext(state);
-                log("start discovery result " + status.isSuccess());
-                if (!e.isDisposed() && !status.isSuccess()) {
-                    int statusCode = status.getStatusCode();
-                    e.onError(new Throwable("status " + statusCode));
-                }
+        }, new DiscoveryOptions(strategy)).setResultCallback(status -> {
+            state.setDiscovering(status.isSuccess());
+            stateSubject.onNext(state);
+            log("start discovery result " + status.isSuccess());
+            if (!e.isDisposed() && !status.isSuccess()) {
+                int statusCode = status.getStatusCode();
+                e.onError(new Throwable("status " + statusCode));
             }
         });
     }
@@ -460,12 +446,9 @@ public final class RxNearby {
      */
     @CheckResult @NonNull
     public Single<ConnectionEvent> requestConnection(@NonNull final Endpoint endpoint, @Nullable final String thisDeviceName) {
-        return Single.create(new SingleOnSubscribe<ConnectionEvent>() {
-            @Override
-            public void subscribe(@io.reactivex.annotations.NonNull SingleEmitter<ConnectionEvent> e) throws Exception {
-                makeConnectionRequest(e, endpoint, thisDeviceName);
-            }
-        }).subscribeOn(Schedulers.io());
+        return Single.create((SingleOnSubscribe<ConnectionEvent>) e ->
+                makeConnectionRequest(e, endpoint, thisDeviceName))
+                .subscribeOn(Schedulers.io());
     }
 
     private void makeConnectionRequest(final SingleEmitter<ConnectionEvent> e, final Endpoint endpoint, String thisDeviceName) {
@@ -503,25 +486,22 @@ public final class RxNearby {
                         endpointsSubject.onNext(endpoints);
                     }
                 })
-                .setResultCallback(new ResultCallback<Status>() {
-                    @Override
-                    public void onResult(@NonNull Status status) {
-                        if (e.isDisposed()) {
-                            // the emitter is not longer interested
-                            return;
-                        }
-                        ConnectionEvent event;
-
-                        if (status.isSuccess()) {
-                            log("successfully connected to " + endpoint.getEndpointName());
-                            event = new ConnectionEvent(ConnectionEvent.EventType.REQUEST_ACCEPTED, endpoint);
-                        } else {
-                            log("failed to connect to " + endpoint.getEndpointName() + " " + status.getStatusCode());
-                            event = new ConnectionEvent(ConnectionEvent.EventType.REQUEST_REJECTED, endpoint);
-                        }
-
-                        e.onSuccess(event);
+                .setResultCallback(status -> {
+                    if (e.isDisposed()) {
+                        // the emitter is not longer interested
+                        return;
                     }
+                    ConnectionEvent event;
+
+                    if (status.isSuccess()) {
+                        log("successfully connected to " + endpoint.getEndpointName());
+                        event = new ConnectionEvent(ConnectionEvent.EventType.REQUEST_ACCEPTED, endpoint);
+                    } else {
+                        log("failed to connect to " + endpoint.getEndpointName() + " " + status.getStatusCode());
+                        event = new ConnectionEvent(ConnectionEvent.EventType.REQUEST_REJECTED, endpoint);
+                    }
+
+                    e.onSuccess(event);
                 });
     }
 
