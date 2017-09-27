@@ -50,6 +50,8 @@ import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.BehaviorSubject;
 import io.reactivex.subjects.PublishSubject;
 
+import static com.ivianuu.preconditions.Preconditions.checkNotNull;
+
 /**
  * Rx nearby
  */
@@ -112,6 +114,8 @@ public final class RxNearby {
      */
     @NonNull
     public static RxNearby create(@NonNull Context context, @NonNull String serviceId) {
+        checkNotNull(context, "context == null");
+        checkNotNull(serviceId, "serviceId == null");
         return new RxNearby(context, serviceId);
     }
 
@@ -195,15 +199,8 @@ public final class RxNearby {
      * Starts advertising
      */
     @CheckResult @NonNull
-    public Observable<Endpoint> startAdvertising(@NonNull Strategy strategy) {
-        return startAdvertising(null, strategy);
-    }
-
-    /**
-     * Starts advertising
-     */
-    @CheckResult @NonNull
-    public Observable<Endpoint> startAdvertising(final String thisDeviceName, final Strategy strategy) {
+    public Observable<Endpoint> startAdvertising(@Nullable String thisDeviceName,
+                                                 @Nullable Strategy strategy) {
         return Observable.create((ObservableOnSubscribe<Endpoint>) e ->
                 advertise(e, thisDeviceName, strategy)).subscribeOn(Schedulers.io());
     }
@@ -405,6 +402,7 @@ public final class RxNearby {
      * Accepts the connection to the specified endpoint
      */
     public void acceptConnection(@NonNull Endpoint endpoint) {
+        checkNotNull(endpoint, "endpoint == null");
         log("accepting connection to " + endpoint.getEndpointName());
         Nearby.Connections.acceptConnection(googleApiClient, endpoint.getEndpointId(), new PayloadCallback() {
             @Override
@@ -427,6 +425,7 @@ public final class RxNearby {
      * Rejects the connection to the specified endpoint
      */
     public void rejectConnection(@NonNull Endpoint endpoint) {
+        checkNotNull(endpoint, "endpoint == null");
         log("reject connection to " + endpoint.getEndpointName());
         endpoint.setStatus(Endpoint.Status.STATUS_REQUEST_DENIED_BY_ME);
         endpointsSubject.onNext(endpoints);
@@ -446,6 +445,7 @@ public final class RxNearby {
      */
     @CheckResult @NonNull
     public Single<ConnectionEvent> requestConnection(@NonNull final Endpoint endpoint, @Nullable final String thisDeviceName) {
+        checkNotNull(endpoint, "endpoint == null");
         return Single.create((SingleOnSubscribe<ConnectionEvent>) e ->
                 makeConnectionRequest(e, endpoint, thisDeviceName))
                 .subscribeOn(Schedulers.io());
@@ -509,6 +509,7 @@ public final class RxNearby {
      * Disconnects from the specified endpoint
      */
     public void disconnectFromEndpoint(@NonNull Endpoint endpoint) {
+        checkNotNull(endpoint, "endpoint == null");
         log("disconnecting from endpoint " + endpoint.getEndpointName());
         Nearby.Connections.disconnectFromEndpoint(googleApiClient, endpoint.getEndpointId());
         endpoints.removeEndpoint(endpoint);
@@ -539,6 +540,7 @@ public final class RxNearby {
      * Sends the payload to all connected devices
      */
     public void sendMessageToAllConnectedEndpoints(@NonNull Payload payload) {
+        checkNotNull(payload, "payload == null");
         log("sending message to all");
         for (Endpoint endpoint : endpoints.getEndpointsByStatus(Endpoint.Status.STATUS_CONNECTED)) {
             sendMessage(new Message(endpoint, payload));
@@ -549,6 +551,7 @@ public final class RxNearby {
      * Sends the message
      */
     public void sendMessage(@NonNull Message message) {
+        checkNotNull(message, "message == null");
         log("sending message to " + message.getEndpoint().getEndpointName());
         Nearby.Connections.sendPayload(googleApiClient, message.getEndpoint().getEndpointId(), message.getPayload());
     }
