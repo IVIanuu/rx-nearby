@@ -42,6 +42,9 @@ dependencies {
     // Android support
     implementation rootProject.ext.supportAppCompat
 
+    // Kotlin
+    implementation rootProject.ext.kotlinStdlib
+
     // RxNearby
     implementation project(':rxnearby')
 

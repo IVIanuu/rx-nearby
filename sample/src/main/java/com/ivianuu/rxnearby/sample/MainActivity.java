@@ -16,10 +16,8 @@
 
 package com.ivianuu.rxnearby.sample;
 
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -27,17 +25,11 @@ import android.widget.Toast;
 
 import com.google.android.gms.nearby.connection.Payload;
 
-import com.ivianuu.rxnearby.ConnectionEvent;
-import com.ivianuu.rxnearby.Endpoint;
-import com.ivianuu.rxnearby.Endpoints;
-import com.ivianuu.rxnearby.Message;
 import com.ivianuu.rxnearby.RxNearby;
-import com.ivianuu.rxnearby.State;
 
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 // ACTIVITY IS LEAKING!! ALWAYS DISPOSE YOU OBSERVABLES:D

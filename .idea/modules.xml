@@ -3,8 +3,11 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/RxNearby.iml" filepath="$PROJECT_DIR$/RxNearby.iml" />
+      <module fileurl="file://C:\Users\IVIanuu\AndroidStudioProjects\RxNearby\RxNearby.iml" filepath="C:\Users\IVIanuu\AndroidStudioProjects\RxNearby\RxNearby.iml" />
       <module fileurl="file://$PROJECT_DIR$/rxnearby/rxnearby.iml" filepath="$PROJECT_DIR$/rxnearby/rxnearby.iml" />
+      <module fileurl="file://C:\Users\IVIanuu\AndroidStudioProjects\RxNearby\rxnearby\rxnearby.iml" filepath="C:\Users\IVIanuu\AndroidStudioProjects\RxNearby\rxnearby\rxnearby.iml" />
       <module fileurl="file://$PROJECT_DIR$/sample/sample.iml" filepath="$PROJECT_DIR$/sample/sample.iml" />
+      <module fileurl="file://C:\Users\IVIanuu\AndroidStudioProjects\RxNearby\sample\sample.iml" filepath="C:\Users\IVIanuu\AndroidStudioProjects\RxNearby\sample\sample.iml" />
     </modules>
   </component>
 </project>
